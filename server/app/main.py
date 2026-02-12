@@ -1,33 +1,20 @@
-from fastapi import FastAPI, Depends
-from fastapi.params import Body
-from pydantic import BaseModel
-from typing import Optional
-# from database import engine, Base
-from typing import Annotated
-from sqlalchemy.orm import Session
-from app.database import session
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from app.routers.oauth import auth
+
 
 app = FastAPI()
-
-def get_db():
-    db = session()
-    try:
-        yield db
-    finally:
-        db.close()
-
-db_dependency = Annotated[Session, Depends(get_db)]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
-@app.get("/")
+@app.get("/health")
 def root():
-    return {"Hello": "Relationship Family"} 
+    return {"Hello": "This is Relationship Family Project"} 
 
-@app.post("/posts")
-def create_post(payload: Post):
-    print(payload.dict())
-    return {"Hello": "Relationship Family"} 
-
-@app.get("/posts")
-def get_posts():
-    return {"Hello": "Relationship Family"} 
+app.include_router(auth.router)
