@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import styles from './page.module.css'
+import Link from 'next/link'
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
         <p>
           Hello world with Nextjs 13
         </p>
+        <Link href="/admin">Admin</Link>
         <div>
           <a
             href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
